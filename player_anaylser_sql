@@ -1,0 +1,151 @@
+
+DROP DATABASE IF EXISTS PlayerAnalyzer;
+CREATE DATABASE PlayerAnalyzer;
+USE PlayerAnalyzer;
+
+
+
+-- Table 1: Player details
+CREATE TABLE Players (
+    Player_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Age INT,
+    Country VARCHAR(50),
+    Role VARCHAR(30)   -- Example: Batsman, Bowler, All-Rounder
+);
+
+-- Table 2: Match details
+CREATE TABLE Matches (
+    Match_ID INT PRIMARY KEY,
+    Match_Date DATE,
+    Opponent VARCHAR(50),
+    Venue VARCHAR(50)
+);
+
+-- Table 3: Player Performance per Match
+CREATE TABLE Performance (
+    Player_ID INT,
+    Match_ID INT,
+    Runs INT,
+    Wickets INT,
+    Catches INT,
+    FOREIGN KEY (Player_ID) REFERENCES Players(Player_ID),
+    FOREIGN KEY (Match_ID) REFERENCES Matches(Match_ID)
+);
+
+/* ---------------------------------------------------------
+   STEP 3️⃣ : INSERT SAMPLE DATA
+   --------------------------------------------------------- */
+
+-- Insert players
+INSERT INTO Players VALUES
+(1, 'Virat Kohli', 35, 'India', 'Batsman'),
+(2, 'Jasprit Bumrah', 31, 'India', 'Bowler'),
+(3, 'Ben Stokes', 33, 'England', 'All-Rounder'),
+(4, 'Babar Azam', 30, 'Pakistan', 'Batsman'),
+(5, 'Pat Cummins', 32, 'Australia', 'Bowler');
+
+-- Insert matches
+INSERT INTO Matches VALUES
+(101, '2024-04-12', 'England', 'Delhi'),
+(102, '2024-04-15', 'Australia', 'Mumbai'),
+(103, '2024-04-20', 'Pakistan', 'Kolkata');
+
+-- Insert player performances
+INSERT INTO Performance VALUES
+(1, 101, 85, 0, 1),
+(2, 101, 10, 3, 0),
+(3, 101, 45, 1, 1),
+(1, 102, 102, 0, 0),
+(5, 102, 25, 4, 0),
+(3, 102, 60, 2, 1),
+(4, 103, 78, 0, 1),
+(2, 103, 5, 2, 0),
+(5, 103, 15, 3, 0);
+
+
+
+
+-- Show all players
+SELECT * FROM Players;
+
+-- Show all matches
+SELECT * FROM Matches;
+
+-- Show all performance data
+SELECT * FROM Performance;
+
+
+-- 1️⃣ Total runs scored by each player
+SELECT p.Name, SUM(f.Runs) AS Total_Runs
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Name
+ORDER BY Total_Runs DESC;
+
+-- 2️⃣ Total wickets taken by each player
+SELECT p.Name, SUM(f.Wickets) AS Total_Wickets
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Name
+ORDER BY Total_Wickets DESC;
+
+-- 3️⃣ Player with the highest average runs
+SELECT p.Name, AVG(f.Runs) AS Avg_Runs
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Name
+ORDER BY Avg_Runs DESC;
+
+-- 4️⃣ Top wicket taker
+SELECT p.Name, SUM(f.Wickets) AS Total_Wickets
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Name
+ORDER BY Total_Wickets DESC
+LIMIT 1;
+
+-- 5️⃣ Match-wise total team runs
+SELECT m.Match_ID, m.Match_Date, SUM(f.Runs) AS Total_Team_Runs
+FROM Matches m
+JOIN Performance f ON m.Match_ID = f.Match_ID
+GROUP BY m.Match_ID, m.Match_Date
+ORDER BY m.Match_Date;
+
+-- 6️⃣ Country-wise average wickets
+SELECT p.Country, AVG(f.Wickets) AS Avg_Wickets
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Country;
+
+-- 7️⃣ Detailed match performance
+SELECT m.Match_ID, m.Match_Date, p.Name, f.Runs, f.Wickets, f.Catches
+FROM Performance f
+JOIN Players p ON f.Player_ID = p.Player_ID
+JOIN Matches m ON f.Match_ID = m.Match_ID
+ORDER BY m.Match_Date, p.Name;
+
+-- 8️⃣ Best player by performance score (Formula: Runs + 20×Wickets + 10×Catches)
+SELECT p.Name,
+       SUM(f.Runs + (20 * f.Wickets) + (10 * f.Catches)) AS Performance_Score
+FROM Players p
+JOIN Performance f ON p.Player_ID = f.Player_ID
+GROUP BY p.Name
+ORDER BY Performance_Score DESC;
+
+-- 9️⃣ Players who scored more than 50 runs in any match
+SELECT DISTINCT p.Name, f.Runs, m.Match_ID
+FROM Performance f
+JOIN Players p ON f.Player_ID = p.Player_ID
+JOIN Matches m ON f.Match_ID = m.Match_ID
+WHERE f.Runs > 50
+ORDER BY f.Runs DESC;
+
+-- 🔟 Find the match where total runs were highest
+SELECT m.Match_ID, m.Match_Date, SUM(f.Runs) AS Total_Runs
+FROM Matches m
+JOIN Performance f ON m.Match_ID = f.Match_ID
+GROUP BY m.Match_ID, m.Match_Date
+ORDER BY Total_Runs DESC
+LIMIT 1;
+
