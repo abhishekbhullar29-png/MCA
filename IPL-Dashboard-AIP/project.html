@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>IPL Data Management | Dashboard</title>
+    <!-- Bootstrap 5 CSS + Icons + Chart.js CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- External custom CSS -->
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+
+    <!-- ======================= NAVBAR ======================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="project.html"><i class="bi bi-trophy-fill"></i> IPL DataHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#iplNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="iplNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="project.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="players.html">Players</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pointstable.html">Points Table</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                </ul>
+                <button id="themeToggleBtn" class="btn btn-outline-light rounded-pill px-3"><i class="bi bi-moon-stars-fill me-1"></i> B&W Theme</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======================= MAIN CONTENT: 3-COLUMN LAYOUT ======================= -->
+    <div class="container-fluid main-container mt-4">
+        <div class="row g-4">
+            
+            <!-- LEFT COLUMN: teams & players stats -->
+            <div class="col-lg-3 col-md-12">
+                <div class="card shadow-sm border-0 h-100 stats-card">
+                    <div class="card-header"><i class="bi bi-bar-chart-steps"></i> Teams & Players Stats</div>
+                    <div class="card-body p-3" id="statsPanel">
+                        <div class="text-center text-muted">Loading statistics...</div>
+                    </div>
+                </div>
+                <!-- Action Buttons - Open Forms -->
+                <div class="d-flex gap-2 mt-3 justify-content-between">
+                    <button id="openAddFormBtn" class="btn btn-success w-100"><i class="bi bi-plus-circle"></i> Add Player/Team</button>
+                    <button id="openUpdateFormBtn" class="btn btn-warning w-100"><i class="bi bi-pencil-square"></i> Update</button>
+                    <button id="openDeleteFormBtn" class="btn btn-danger w-100"><i class="bi bi-trash"></i> Delete</button>
+                </div>
+                <div class="mt-2 text-center small text-muted">* Click buttons to manage data</div>
+            </div>
+
+            <!-- CENTER COLUMN: search bar + all IPL teams list -->
+            <div class="col-lg-6 col-md-12">
+                <div class="card shadow-sm border-0 search-card">
+                    <div class="card-header"><i class="bi bi-search"></i> Search Player / Team</div>
+                    <div class="card-body">
+                        <input type="text" id="searchInput" class="form-control form-control-lg mb-3" placeholder="🔍 Search by player name or team (e.g., Kohli, CSK, Mumbai)">
+                        <div id="searchResult" class="alert alert-info d-none"></div>
+                        <hr>
+                        <h6 class="fw-bold"><i class="bi bi-building"></i> All IPL Teams</h6>
+                        <div id="iplTeamsList" class="row row-cols-2 row-cols-md-3 g-2 mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Graph -->
+            <div class="col-lg-3 col-md-12">
+                <div class="card shadow-sm border-0 graph-card h-100">
+                    <div class="card-header"><i class="bi bi-graph-up"></i> IPL Team Performance</div>
+                    <div class="card-body text-center">
+                        <canvas id="teamChart" width="400" height="300" style="max-width:100%; height:auto;"></canvas>
+                        <p class="small text-muted mt-2">Top teams by win% (live data)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 mt-4">
+        <small>IPL Data Management System | Dynamic CRUD Operations</small>
+    </footer>
+
+    <!-- ======================= MODAL FORMS ======================= -->
+    
+    <!-- Add Form Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-plus-circle-fill"></i> Add New Player or Team</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3" id="addTab" role="tablist">
+                        <li class="nav-item"><button class="nav-link active" id="add-player-tab" data-bs-toggle="tab" data-bs-target="#addPlayer">Add Player</button></li>
+                        <li class="nav-item"><button class="nav-link" id="add-team-tab" data-bs-toggle="tab" data-bs-target="#addTeam">Add Team</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="addPlayer">
+                            <form id="addPlayerForm">
+                                <div class="mb-3"><label class="form-label">Player Name *</label><input type="text" class="form-control" id="playerName" required></div>
+                                <div class="mb-3"><label class="form-label">Team Name *</label><select class="form-select" id="playerTeam" required><option value="">Select Team</option></select></div>
+                                <div class="mb-3"><label class="form-label">Runs</label><input type="number" class="form-control" id="playerRuns" value="0"></div>
+                                <div class="mb-3"><label class="form-label">Wickets</label><input type="number" class="form-control" id="playerWickets" value="0"></div>
+                                <div class="mb-3"><label class="form-label">Matches</label><input type="number" class="form-control" id="playerMatches" value="0"></div>
+                                <button type="submit" class="btn btn-success w-100">Add Player</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="addTeam">
+                            <form id="addTeamForm">
+                                <div class="mb-3"><label class="form-label">Team Name *</label><input type="text" class="form-control" id="teamName" required placeholder="e.g., Gujarat Titans (GT)"></div>
+                                <div class="mb-3"><label class="form-label">Matches Played</label><input type="number" class="form-control" id="teamMatches" value="0"></div>
+                                <div class="mb-3"><label class="form-label">Wins</label><input type="number" class="form-control" id="teamWins" value="0"></div>
+                                <div class="mb-3"><label class="form-label">Losses</label><input type="number" class="form-control" id="teamLosses" value="0"></div>
+                                <button type="submit" class="btn btn-success w-100">Add Team</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Form Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Update Player or Team</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item"><button class="nav-link active" id="update-player-tab" data-bs-toggle="tab" data-bs-target="#updatePlayerPanel">Update Player</button></li>
+                        <li class="nav-item"><button class="nav-link" id="update-team-tab" data-bs-toggle="tab" data-bs-target="#updateTeamPanel">Update Team</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="updatePlayerPanel">
+                            <form id="updatePlayerForm">
+                                <div class="mb-3"><label class="form-label">Select Player *</label><select class="form-select" id="updatePlayerSelect" required><option value="">Choose Player</option></select></div>
+                                <div class="mb-3"><label class="form-label">New Player Name</label><input type="text" class="form-control" id="updatePlayerName" placeholder="Leave blank to keep same"></div>
+                                <div class="mb-3"><label class="form-label">New Team</label><select class="form-select" id="updatePlayerTeam"><option value="">Keep Current</option></select></div>
+                                <div class="mb-3"><label class="form-label">Runs</label><input type="number" class="form-control" id="updatePlayerRuns" placeholder="New runs value"></div>
+                                <div class="mb-3"><label class="form-label">Wickets</label><input type="number" class="form-control" id="updatePlayerWickets" placeholder="New wickets"></div>
+                                <div class="mb-3"><label class="form-label">Matches</label><input type="number" class="form-control" id="updatePlayerMatches" placeholder="New matches"></div>
+                                <button type="submit" class="btn btn-warning w-100">Update Player</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="updateTeamPanel">
+                            <form id="updateTeamForm">
+                                <div class="mb-3"><label class="form-label">Select Team *</label><select class="form-select" id="updateTeamSelect" required><option value="">Choose Team</option></select></div>
+                                <div class="mb-3"><label class="form-label">New Team Name</label><input type="text" class="form-control" id="updateTeamName" placeholder="New team name"></div>
+                                <div class="mb-3"><label class="form-label">Matches</label><input type="number" class="form-control" id="updateTeamMatches" placeholder="Matches played"></div>
+                                <div class="mb-3"><label class="form-label">Wins</label><input type="number" class="form-control" id="updateTeamWins" placeholder="Wins"></div>
+                                <div class="mb-3"><label class="form-label">Losses</label><input type="number" class="form-control" id="updateTeamLosses" placeholder="Losses"></div>
+                                <button type="submit" class="btn btn-warning w-100">Update Team</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Form Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-trash-fill"></i> Delete Player or Team</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#deletePlayerPanel">Delete Player</button></li>
+                        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#deleteTeamPanel">Delete Team</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="deletePlayerPanel">
+                            <form id="deletePlayerForm">
+                                <div class="mb-3"><label class="form-label">Select Player to Delete *</label><select class="form-select" id="deletePlayerSelect" required><option value="">Choose Player</option></select></div>
+                                <button type="submit" class="btn btn-danger w-100">Delete Player</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="deleteTeamPanel">
+                            <form id="deleteTeamForm">
+                                <div class="mb-3"><label class="form-label">Select Team to Delete *</label><select class="form-select" id="deleteTeamSelect" required><option value="">Choose Team</option></select></div>
+                                <button type="submit" class="btn btn-danger w-100">Delete Team</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="project.js"></script>
+</body>
+</html>

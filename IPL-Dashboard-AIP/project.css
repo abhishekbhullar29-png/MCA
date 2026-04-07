@@ -1,0 +1,392 @@
+/* IPL DATA MANAGEMENT SYSTEM - MASTER CSS */
+:root {
+  --primary-bg: #f8fafc;
+  --secondary-bg: #ffffff;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --transition: all 0.3s ease;
+  
+  /* IPL Team Colors */
+  --csk-yellow: #f9c23c;
+  --csk-yellow-dark: #e6b422;
+  --mi-blue: #004c9e;
+  --mi-blue-dark: #003b7a;
+  --rcb-red: #ed1c24;
+  --rcb-red-dark: #c41018;
+  --kkr-purple: #3c1053;
+  --kkr-gold: #d4af37;
+  --dc-blue: #0078bc;
+  --dc-red: #ef4135;
+  --pbks-red: #ed1b2f;
+  --pbks-silver: #b8b8b8;
+  --rr-pink: #ff69b4;
+  --rr-blue: #00a3e0;
+  --srh-orange: #f78c1e;
+  --srh-black: #1a1a1a;
+  --gt-blue: #1b2b8c;
+  --gt-gold: #f9b81b;
+  --lsg-green: #00a650;
+  --lsg-cyan: #00b4d8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  color: var(--text-dark);
+  transition: var(--transition);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Black & White Theme */
+body.bw-theme { filter: grayscale(100%); background: #f0f0f0; color: #111; }
+body.bw-theme .card, body.bw-theme .navbar, body.bw-theme .btn,
+body.bw-theme .hero-section, body.bw-theme .filter-bar { filter: grayscale(100%); background-color: #3a3a3a !important; color: #fff !important; }
+body.bw-theme .navbar-brand { background: none !important; color: #fff !important; }
+body.bw-theme .team-badge { filter: grayscale(100%); }
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  box-shadow: var(--shadow-md);
+  padding: 0.75rem 1rem;
+  border-bottom: 3px solid var(--csk-yellow);
+}
+.navbar-brand {
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--csk-yellow), var(--rcb-red), var(--mi-blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  font-weight: bold;
+}
+.navbar-brand i { font-size: 1.6rem; margin-right: 8px; color: var(--csk-yellow); }
+.nav-link { font-weight: 500; margin: 0 0.25rem; border-radius: 8px; padding: 0.5rem 1rem !important; color: #fff !important; }
+.nav-link:hover { background: linear-gradient(135deg, rgba(249,194,60,0.2), rgba(237,28,36,0.2)); transform: translateY(-1px); }
+.nav-link.active { background: linear-gradient(135deg, var(--csk-yellow), var(--rcb-red)); color: #fff !important; }
+#themeToggleBtn { transition: var(--transition); border: 2px solid var(--csk-yellow); color: var(--csk-yellow); }
+#themeToggleBtn:hover { background: linear-gradient(135deg, var(--csk-yellow), var(--kkr-gold)); color: #0f172a; }
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.hero-section .badge { padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 50px; }
+
+/* Main Container */
+.main-container { max-width: 1600px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  overflow: hidden;
+  background-color: var(--secondary-bg);
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--csk-yellow), var(--mi-blue), var(--rcb-red), var(--kkr-purple), var(--srh-orange));
+}
+.card:hover { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15); transform: translateY(-2px); }
+.card-header { font-size: 1.1rem; padding: 1rem 1.25rem; font-weight: 600; background: linear-gradient(135deg, var(--mi-blue), var(--kkr-purple)); color: white; }
+.card-header i { margin-right: 8px; }
+
+/* Buttons */
+.btn { border-radius: 12px; font-weight: 600; padding: 0.6rem 1rem; transition: var(--transition); position: relative; overflow: hidden; }
+.btn-warning { background: linear-gradient(135deg, var(--csk-yellow), #e6b422); color: #1e293b; }
+.btn-success { background: linear-gradient(135deg, var(--lsg-green), #008c40); color: white; }
+.btn-danger { background: linear-gradient(135deg, var(--rcb-red), #c41018); color: white; }
+.btn-primary { background: linear-gradient(135deg, var(--mi-blue), #003b7a); border: none; }
+.btn::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255,255,255,0.5); transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s; }
+.btn:active::after { width: 100%; height: 100%; }
+
+/* Search & Teams */
+#searchInput { border-radius: 50px; border: 2px solid var(--border-color); padding: 0.75rem 1.25rem; transition: var(--transition); }
+#searchInput:focus { border-color: var(--csk-yellow); box-shadow: 0 0 0 3px rgba(249,194,60,0.2); }
+#searchResult { border-radius: 16px; background: linear-gradient(135deg, #fef9e6, #fff5e0); border-left: 4px solid var(--rcb-red); padding: 1rem; max-height: 250px; overflow-y: auto; }
+
+/* IPL Teams List with Team Colors - Fixed */
+#iplTeamsList {
+  margin-top: 0.75rem;
+}
+
+.team-badge {
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.8rem;
+  padding: 0.6rem 0.5rem !important;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border-radius: 12px !important;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Individual team badge colors - Specific selectors */
+.team-badge[data-team-name*="CSK"],
+.team-badge[data-team-name*="Chennai"] {
+  background: linear-gradient(135deg, #f9c23c, #e6b422) !important;
+  color: #1e293b !important;
+}
+
+.team-badge[data-team-name*="MI"],
+.team-badge[data-team-name*="Mumbai"] {
+  background: linear-gradient(135deg, #004c9e, #003b7a) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="RCB"],
+.team-badge[data-team-name*="Bangalore"] {
+  background: linear-gradient(135deg, #ed1c24, #c41018) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="KKR"],
+.team-badge[data-team-name*="Kolkata"] {
+  background: linear-gradient(135deg, #3c1053, #2a0c3a) !important;
+  color: #d4af37 !important;
+}
+
+.team-badge[data-team-name*="DC"],
+.team-badge[data-team-name*="Delhi"] {
+  background: linear-gradient(135deg, #0078bc, #005c9e) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="PBKS"],
+.team-badge[data-team-name*="Punjab"] {
+  background: linear-gradient(135deg, #ed1b2f, #c41428) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="RR"],
+.team-badge[data-team-name*="Rajasthan"] {
+  background: linear-gradient(135deg, #ff69b4, #ff4d94) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="SRH"],
+.team-badge[data-team-name*="Hyderabad"] {
+  background: linear-gradient(135deg, #f78c1e, #e07c1a) !important;
+  color: white !important;
+}
+
+.team-badge[data-team-name*="GT"],
+.team-badge[data-team-name*="Gujarat"] {
+  background: linear-gradient(135deg, #1b2b8c, #12206b) !important;
+  color: #f9b81b !important;
+}
+
+.team-badge[data-team-name*="LSG"],
+.team-badge[data-team-name*="Lucknow"] {
+  background: linear-gradient(135deg, #00a650, #008040) !important;
+  color: white !important;
+}
+
+.team-badge:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.05);
+}
+
+/* Players Page */
+.filter-bar, .comparison-bar { background: var(--secondary-bg); border-radius: 20px; }
+.comparison-bar { background: linear-gradient(135deg, #fef9e6, #fff5e0); border-left: 4px solid var(--csk-yellow); }
+.player-card { transition: var(--transition); cursor: pointer; margin-bottom: 1rem; position: relative; }
+.player-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.player-card .player-name { font-size: 1.1rem; font-weight: bold; }
+.player-card .player-team { 
+  display: inline-block; 
+  padding: 0.2rem 0.8rem; 
+  border-radius: 20px; 
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.player-stats { display: flex; justify-content: space-between; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); }
+.player-stats .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--mi-blue); }
+.compare-checkbox { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; cursor: pointer; z-index: 10; }
+
+/* Team colors for player badges */
+.player-card .player-team[data-team="CSK"] { background: linear-gradient(135deg, #f9c23c, #e6b422); color: #1e293b; }
+.player-card .player-team[data-team="MI"] { background: linear-gradient(135deg, #004c9e, #003b7a); color: white; }
+.player-card .player-team[data-team="RCB"] { background: linear-gradient(135deg, #ed1c24, #c41018); color: white; }
+.player-card .player-team[data-team="KKR"] { background: linear-gradient(135deg, #3c1053, #2a0c3a); color: #d4af37; }
+.player-card .player-team[data-team="DC"] { background: linear-gradient(135deg, #0078bc, #005c9e); color: white; }
+.player-card .player-team[data-team="PBKS"] { background: linear-gradient(135deg, #ed1b2f, #c41428); color: white; }
+.player-card .player-team[data-team="RR"] { background: linear-gradient(135deg, #ff69b4, #ff4d94); color: white; }
+.player-card .player-team[data-team="SRH"] { background: linear-gradient(135deg, #f78c1e, #e07c1a); color: white; }
+.player-card .player-team[data-team="GT"] { background: linear-gradient(135deg, #1b2b8c, #12206b); color: #f9b81b; }
+.player-card .player-team[data-team="LSG"] { background: linear-gradient(135deg, #00a650, #008040); color: white; }
+
+/* Points Table Page */
+.custom-tabs { border-bottom: 2px solid var(--border-color); }
+.custom-tabs .nav-link { color: var(--text-muted); border: none; padding: 0.75rem 1.5rem; font-weight: 600; transition: var(--transition); }
+.custom-tabs .nav-link:hover { color: var(--csk-yellow); background: transparent; }
+.custom-tabs .nav-link.active { color: var(--csk-yellow); border-bottom: 3px solid var(--csk-yellow); background: transparent; }
+.points-table { margin-bottom: 0; }
+.points-table thead { background: linear-gradient(135deg, var(--mi-blue), var(--kkr-purple)); color: white; }
+.points-table tbody tr { transition: var(--transition); }
+.points-table tbody tr:hover { background: #fef9e6; transform: scale(1.01); }
+.points-table .qualified { background: linear-gradient(90deg, rgba(34,197,94,0.1), transparent); border-left: 4px solid var(--lsg-green); }
+.form-badge { display: inline-flex; gap: 0.2rem; }
+.form-badge .result { width: 25px; height: 25px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
+.result-win { background: var(--lsg-green); color: white; }
+.result-loss { background: var(--rcb-red); color: white; }
+.result-nr { background: #94a3b8; color: white; }
+
+/* Match Cards */
+.match-card { background: var(--secondary-bg); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid var(--csk-yellow); transition: var(--transition); }
+.match-card:hover { transform: translateX(5px); box-shadow: var(--shadow-sm); }
+.match-teams { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.match-team { font-weight: bold; font-size: 1rem; }
+.match-vs { font-size: 0.85rem; color: var(--text-muted); }
+.match-details { font-size: 0.85rem; color: var(--text-muted); }
+.match-result { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border-color); font-weight: 600; color: var(--lsg-green); }
+
+/* Modals */
+.modal-content { border-radius: 20px; overflow: hidden; }
+.modal-header { background: linear-gradient(135deg, var(--mi-blue), var(--kkr-purple)); color: white; border: none; }
+.modal-header .btn-close { filter: brightness(0) invert(1); }
+
+/* Footer */
+footer { background: linear-gradient(135deg, #0f172a, #1e293b) !important; color: #fff !important; border-top: 3px solid var(--csk-yellow) !important; padding: 1rem 0 !important; }
+footer small { color: #b8c4d9 !important; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--border-color); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--csk-yellow), var(--rcb-red)); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, var(--mi-blue), var(--kkr-purple)); }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+.card, .player-card, .match-card { animation: fadeIn 0.4s ease-out; }
+
+/* Toast notification */
+.alert-success { z-index: 9999; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); max-width: 400px; border-radius: 50px; box-shadow: var(--shadow-md); animation: slideDown 0.3s ease-out; background: linear-gradient(135deg, var(--lsg-green), #008c40); color: white; font-weight: 500; border: none; }
+
+/* Chart.js container */
+canvas { max-width: 100%; height: auto !important; border-radius: 12px; }
+
+/* Progress bar */
+.progress { height: 30px; border-radius: 15px; background-color: var(--border-color); overflow: hidden; }
+.progress-bar { background: linear-gradient(135deg, var(--lsg-green), var(--csk-yellow)); font-weight: bold; line-height: 30px; transition: width 0.5s ease; }
+
+/* Utility Classes */
+.text-gradient { background: linear-gradient(135deg, var(--csk-yellow), var(--rcb-red), var(--mi-blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.bg-gradient-primary { background: linear-gradient(135deg, var(--mi-blue), var(--kkr-purple)); }
+.bg-gradient-warning { background: linear-gradient(135deg, var(--csk-yellow), var(--csk-yellow-dark)); }
+.bg-gradient-danger { background: linear-gradient(135deg, var(--rcb-red), var(--rcb-red-dark)); }
+.bg-gradient-success { background: linear-gradient(135deg, var(--lsg-green), #008c40); }
+
+/* Responsive Design */
+@media (max-width: 1200px) { .main-container { padding: 0 1rem; } }
+@media (max-width: 992px) {
+  .col-lg-3, .col-lg-6 { margin-bottom: 1.5rem; }
+  .card-header { font-size: 1rem; }
+  .hero-section h1 { font-size: 2rem; }
+  .hero-section .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+}
+@media (max-width: 768px) {
+  .navbar-brand { font-size: 1.2rem; }
+  .nav-link { padding: 0.4rem 0.75rem !important; font-size: 0.9rem; }
+  #themeToggleBtn { margin-top: 0.5rem; width: 100%; }
+  .team-badge { font-size: 0.7rem; padding: 0.4rem 0.3rem !important; }
+  .hero-section { padding: 2rem 0; }
+  .hero-section h1 { font-size: 1.5rem; }
+  .hero-section .stats-badge { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+  .custom-tabs .nav-link { padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+  .player-stats .stat-value { font-size: 1rem; }
+  .match-teams { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}
+@media (max-width: 576px) {
+  .main-container { padding: 0 0.75rem; }
+  .d-flex.gap-2 { flex-direction: column; }
+  .d-flex.gap-2 .btn { width: 100% !important; margin-bottom: 0.5rem; }
+  .points-table { font-size: 0.8rem; }
+  .points-table th, .points-table td { padding: 0.5rem; }
+  .form-badge .result { width: 20px; height: 20px; font-size: 0.6rem; }
+}
+
+/* 🌈 IPL Gradient Theme */
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(90deg, #ff512f, #dd2476);
+}
+
+/* Cards */
+.card {
+    background: #1e293b;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+}
+
+/* Card Header */
+.card-header {
+    background: linear-gradient(90deg, #fc466b, #3f5efb);
+    font-weight: bold;
+}
+
+/* Table */
+.table {
+    color: #fff;
+}
+
+.table thead {
+    background: #ff512f;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(90deg, #36d1dc, #5b86e5);
+    border: none;
+}
+
+.btn-outline-light:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(120deg, #f6d365, #fda085);
+    color: #000;
+    padding: 40px 0;
+    border-radius: 0 0 20px 20px;
+}
+
+/* Progress Bar */
+.progress-bar {
+    font-weight: bold;
+}
