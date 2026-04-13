@@ -1,0 +1,207 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define FILE_NAME "students.dat"
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+// Insert default data (only if file is empty)
+void insertData() {
+    FILE *fp = fopen(FILE_NAME, "rb");
+
+    if (fp != NULL) {
+        fseek(fp, 0, SEEK_END);
+        if (ftell(fp) > 0) {
+            fclose(fp);
+            return;
+        }
+        fclose(fp);
+    }
+
+    fp = fopen(FILE_NAME, "wb");
+    if (fp == NULL) {
+        printf("Error creating file!\n");
+        return;
+    }
+
+    struct Student s[6] = {
+        {101, "Rahul", 78},
+        {102, "Aman", 85},
+        {103, "Priya", 91},
+        {104, "Neha", 88},
+        {105, "Karan", 72},
+        {106, "Simran", 95}
+    };
+
+    // Write each record properly
+    for (int i = 0; i < 6; i++) {
+        fwrite(&s[i], sizeof(struct Student), 1, fp);
+    }
+
+    fclose(fp);
+}
+
+// Add student
+void add() {
+    FILE *fp = fopen(FILE_NAME, "ab");
+    if (fp == NULL) {
+        printf("File error!\n");
+        return;
+    }
+
+    struct Student s;
+
+    printf("Roll: ");
+    scanf("%d", &s.roll);
+
+    printf("Name: ");
+    scanf(" %49[^\n]", s.name);
+
+    printf("Marks: ");
+    scanf("%f", &s.marks);
+
+    fwrite(&s, sizeof(struct Student), 1, fp);
+    fclose(fp);
+
+    printf("Added successfully!\n");
+}
+
+// Display students
+void display() {
+    FILE *fp = fopen(FILE_NAME, "rb");
+    if (fp == NULL) {
+        printf("File not found!\n");
+        return;
+    }
+
+    struct Student s;
+    int count = 0;
+
+    printf("\nRoll\tName\tMarks\n");
+    printf("-----------------------------\n");
+
+    while (fread(&s, sizeof(struct Student), 1, fp) == 1) {
+        printf("%d\t%s\t%.2f\n", s.roll, s.name, s.marks);
+        count++;
+    }
+
+    if (count == 0)
+        printf("No records found!\n");
+
+    fclose(fp);
+}
+
+// Search student
+void search() {
+    FILE *fp = fopen(FILE_NAME, "rb");
+    if (fp == NULL) {
+        printf("File not found!\n");
+        return;
+    }
+
+    struct Student s;
+    int roll, found = 0;
+
+    printf("Enter roll number: ");
+    scanf("%d", &roll);
+
+    while (fread(&s, sizeof(struct Student), 1, fp) == 1) {
+        if (s.roll == roll) {
+            printf("Found: %s (%.2f marks)\n", s.name, s.marks);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("Student not found!\n");
+
+    fclose(fp);
+}
+
+// Calculate average
+void average() {
+    FILE *fp = fopen(FILE_NAME, "rb");
+    if (fp == NULL) {
+        printf("File not found!\n");
+        return;
+    }
+
+    struct Student s;
+    float sum = 0;
+    int count = 0;
+
+    while (fread(&s, sizeof(struct Student), 1, fp) == 1) {
+        sum += s.marks;
+        count++;
+    }
+
+    if (count > 0)
+        printf("Average Marks = %.2f\n", sum / count);
+    else
+        printf("No data available\n");
+
+    fclose(fp);
+}
+
+// Find topper
+void topper() {
+    FILE *fp = fopen(FILE_NAME, "rb");
+    if (fp == NULL) {
+        printf("File not found!\n");
+        return;
+    }
+
+    struct Student s, t;
+    int found = 0;
+
+    while (fread(&s, sizeof(struct Student), 1, fp) == 1) {
+        if (!found || s.marks > t.marks) {
+            t = s;
+            found = 1;
+        }
+    }
+
+    if (found)
+        printf("Topper: %s (%.2f marks)\n", t.name, t.marks);
+    else
+        printf("No data available\n");
+
+    fclose(fp);
+}
+
+// Main function
+int main() {
+    int ch;
+
+    insertData(); // preload data
+
+    do {
+        printf("\n===== MENU =====\n");
+        printf("1. Add Student\n");
+        printf("2. Display Students\n");
+        printf("3. Search Student\n");
+        printf("4. Average Marks\n");
+        printf("5. Topper\n");
+        printf("6. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1: add(); break;
+            case 2: display(); break;
+            case 3: search(); break;
+            case 4: average(); break;
+            case 5: topper(); break;
+            case 6: printf("Exiting...\n"); break;
+            default: printf("Invalid choice!\n");
+        }
+
+    } while (ch != 6);
+
+    return 0;
+}
