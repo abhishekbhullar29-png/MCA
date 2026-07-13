@@ -1,0 +1,208 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+struct Expense
+{
+    string date;
+    string category;
+    string description;
+    float amount;
+};
+
+vector<Expense> expenses;
+
+// Save data to file
+void saveToFile()
+{
+    ofstream file("expenses.txt");
+
+    for (Expense e : expenses)
+    {
+        file << e.date << endl;
+        file << e.category << endl;
+        file << e.description << endl;
+        file << e.amount << endl;
+    }
+
+    file.close();
+}
+
+// Load data from file
+void loadFromFile()
+{
+    ifstream file("expenses.txt");
+
+    Expense e;
+
+    while (getline(file, e.date))
+    {
+        getline(file, e.category);
+        getline(file, e.description);
+        file >> e.amount;
+        file.ignore();
+
+        expenses.push_back(e);
+    }
+
+    file.close();
+}
+
+// Add Expense
+void addExpense()
+{
+    Expense e;
+
+    cout << "\nEnter Date (DD/MM/YYYY): ";
+    cin >> e.date;
+
+    cout << "Enter Category: ";
+    cin >> e.category;
+
+    cin.ignore();
+
+    cout << "Enter Description: ";
+    getline(cin, e.description);
+
+    cout << "Enter Amount: ";
+    cin >> e.amount;
+
+    expenses.push_back(e);
+
+    saveToFile();
+
+    cout << "\nExpense Added Successfully!\n";
+}
+
+// View All Expenses
+void viewExpenses()
+{
+    if (expenses.empty())
+    {
+        cout << "\nNo Expense Found!\n";
+        return;
+    }
+
+    cout << "\n========== Expense List ==========\n";
+
+    for (int i = 0; i < expenses.size(); i++)
+    {
+        cout << "\nExpense " << i + 1 << endl;
+        cout << "Date        : " << expenses[i].date << endl;
+        cout << "Category    : " << expenses[i].category << endl;
+        cout << "Description : " << expenses[i].description << endl;
+        cout << "Amount      : Rs. " << expenses[i].amount << endl;
+    }
+}
+
+// Search Expense by Category
+void searchCategory()
+{
+    string cat;
+    bool found = false;
+
+    cout << "\nEnter Category: ";
+    cin >> cat;
+
+    cout << "\nMatching Expenses\n";
+
+    for (Expense e : expenses)
+    {
+        if (e.category == cat)
+        {
+            found = true;
+
+            cout << "\nDate        : " << e.date << endl;
+            cout << "Category    : " << e.category << endl;
+            cout << "Description : " << e.description << endl;
+            cout << "Amount      : Rs. " << e.amount << endl;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "\nNo Expense Found!\n";
+    }
+}
+
+// Calculate Total Expense
+void totalExpense()
+{
+    float total = 0;
+
+    for (Expense e : expenses)
+    {
+        total += e.amount;
+    }
+
+    cout << "\nTotal Expense = Rs. " << total << endl;
+}
+
+int main()
+{
+    loadFromFile();
+
+    // Add 10 default expenses only if file is empty
+    if (expenses.empty())
+    {
+        expenses.push_back({"01/07/2026","Food","Breakfast",120});
+        expenses.push_back({"02/07/2026","Travel","Bus Ticket",80});
+        expenses.push_back({"03/07/2026","Shopping","T-Shirt",850});
+        expenses.push_back({"04/07/2026","Bills","Electricity Bill",1500});
+        expenses.push_back({"05/07/2026","Entertainment","Movie Ticket",300});
+        expenses.push_back({"06/07/2026","Food","Lunch",250});
+        expenses.push_back({"07/07/2026","Medical","Medicine",450});
+        expenses.push_back({"08/07/2026","Education","Books",1200});
+        expenses.push_back({"09/07/2026","Recharge","Mobile Recharge",299});
+        expenses.push_back({"10/07/2026","Transport","Cab Fare",420});
+
+        saveToFile();
+    }
+
+    int choice;
+
+    do
+    {
+        cout << "\n====================================";
+        cout << "\n      EXPENSE TRACKER SYSTEM";
+        cout << "\n====================================";
+        cout << "\n1. Add Expense";
+        cout << "\n2. View All Expenses";
+        cout << "\n3. Search Expense by Category";
+        cout << "\n4. Calculate Total Expense";
+        cout << "\n5. Exit";
+
+        cout << "\n\nEnter Your Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            addExpense();
+            break;
+
+        case 2:
+            viewExpenses();
+            break;
+
+        case 3:
+            searchCategory();
+            break;
+
+        case 4:
+            totalExpense();
+            break;
+
+        case 5:
+            cout << "\nThank You for Using Expense Tracker!\n";
+            break;
+
+        default:
+            cout << "\nInvalid Choice! Please Try Again.\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
