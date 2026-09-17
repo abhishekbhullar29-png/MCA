@@ -1,16 +1,57 @@
-# React + Vite
+# NEXORA FINAL COMPLETE E-COMMERCE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Stack
+React + Vite + React Router + Node.js + Express + MongoDB + Mongoose
 
-Currently, two official plugins are available:
+## Included
+- Home, category, product and separate detail pages
+- Search and category filtering
+- Real product photography URLs
+- Wishlist with browser persistence
+- Multi-item cart with quantity controls and persistence
+- Signup/login with bcrypt password hashing + JWT
+- Account page + logout
+- Checkout with address, phone and payment-method selection
+- MongoDB order creation
+- Order success screen
+- My Orders loaded from MongoDB
+- Black/red/white/gold premium theme
+- Responsive UI
+- Empty/loading states
+- API health endpoint
+- Product seed script
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## MongoDB setup
+Start MongoDB locally:
+mongodb://127.0.0.1:27017
 
-## React Compiler
+## Backend
+```bash
+cd server
+npm install
+copy .env.example .env
+npm run seed
+npm run dev
+```
+PowerShell:
+```powershell
+Copy-Item .env.example .env
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Frontend
+Open a second terminal in the project root:
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Backend API: http://localhost:5000
+Health check: http://localhost:5000/api/health
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## MongoDB collections
+users
+products
+orders
+
+## Important
+Payment methods in this academic/demo project are UI selections; no real money is charged. For production payments, connect a payment gateway such as Razorpay/Stripe and add server-side webhook verification. Product image URLs are demo/licensed-source placeholders; replace them with images you have rights to use.
